@@ -1,9 +1,19 @@
 // require('dotenv').config({path: "./env"})
 import dotenv from "dotenv";
+import { app } from "./app.js";
 dotenv.config();   // ← NO PATH
 
 import connectDb from "./db/index.js";
-connectDb();
+connectDb()
+.then(()=>{
+    app.listen(process.env.PORT || 8000 , ()=>{
+        console.log(`Database connected and your port is listening on the port: ${process.env.PORT}`);
+    })
+})
+.catch((error)=>{
+    console.log("Connection failed with database" , error);
+    
+})
 
 
 
