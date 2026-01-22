@@ -7,7 +7,7 @@ import connectDb from "./db/index.js";
 connectDb()
 .then(()=>{
     app.listen(process.env.PORT || 8000 , ()=>{
-        console.log(`Database connected and your port is listening on the port: ${process.env.PORT}`);
+        console.log(`Database connected and your server is running on the port: ${process.env.PORT}`);
     })
 })
 .catch((error)=>{
