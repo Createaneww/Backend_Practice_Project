@@ -19,9 +19,7 @@ const registerUser = asyncHandler( async (req , res)=>{
     const {username , fullname , email , password} = req.body
     console.log("email is: " , email);
     console.log("Password is: " , password);
-
-    
-
+    console.log("fullname is: " , fullname);
 })
 
 
