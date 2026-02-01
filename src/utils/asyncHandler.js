@@ -1,6 +1,7 @@
 //.resolve.catach use karke
 const asyncHandler = (requestHandler)=>{
     return (req , res, next)=>{
+        console.log("NEXT TYPE:", typeof next);
         Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err))
     }
 }
