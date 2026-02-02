@@ -5,7 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const registerUser = asyncHandler( async (req , res)=>{
+const registerUser = asyncHandler( async (req , res , next)=>{
     //get user deatails like username , email , password etc from frontend
     //validation lagana padega like - not empty
     //check if user already exist : through username , email
@@ -18,6 +18,7 @@ const registerUser = asyncHandler( async (req , res)=>{
 
     //1  - get user deatails like username , email , password etc from frontend
     const {username , fullname , email , password} = req.body
+
     
     //2 - validation lagana padega like - not empty
     //checking for fullname method-1
