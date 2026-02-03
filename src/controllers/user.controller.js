@@ -5,6 +5,21 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+const generateAccessandRefreshTokens = async(userId) => {
+    try {
+        const user = await User.findById(userId)
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
+
+        user.refreshToken = refreshToken
+        await user.save({validateBeforeSave : false})
+
+        return {accessToken , refreshToken}
+    } catch (error) {
+        throw new ApiError(500 , "Something went wrong while generating refresh tokens")
+    }
+}
+
 const registerUser = asyncHandler( async (req , res , next)=>{
     //get user deatails like username , email , password etc from frontend
     //validation lagana padega like - not empty
@@ -110,7 +125,16 @@ const loginUser = asyncHandler( async(req , res )=>{
     }
 
     //if user exist then
-    //step4 password check
+    //step4 password check humne models file me method banaya he isPasswordCorrect
+    const isPasswordValid = await user.isPasswordCorrect(password)
+
+    if(!isPasswordValid){
+        throw new ApiError(401 , "Invalid user credentials")
+    }
+
+    //step5 - if true password then generate access and refresh token
+    const {accessToken , refreshToken} = await generateAccessandRefreshTokens(user._id)
+    
     
 
 })
