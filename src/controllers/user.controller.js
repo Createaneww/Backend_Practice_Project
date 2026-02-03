@@ -134,7 +134,28 @@ const loginUser = asyncHandler( async(req , res )=>{
 
     //step5 - if true password then generate access and refresh token
     const {accessToken , refreshToken} = await generateAccessandRefreshTokens(user._id)
-    
+
+    //user ko password aur refreshToken nhi bhejna
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+    //step6 - cookies
+    const options = {
+        httpOnly: true,  //iska matlab is cookies sirf server se hi manage hogi
+        secure: true
+    }
+    return res
+    .status(200)
+    .cookie("accessToken" , accessToken , options)
+    .cookie("refreshToken" , refreshToken , options)
+    .json(
+        new ApiResponse(
+            200 , 
+            {
+                user: loggedInUser , accessToken , refreshToken
+            },
+            "User logged in successfully"
+        )
+    )
     
 
 })
