@@ -163,10 +163,11 @@ const loginUser = asyncHandler( async(req , res )=>{
 
 //logout fucntion
 const logoutUser = asyncHandler(async(req , res)=>{
-
+    
 })
 
 export {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }
