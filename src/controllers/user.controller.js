@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 const generateAccessandRefreshTokens = async(userId) => {
     try {
@@ -408,6 +409,26 @@ const getUserChannelProfile = asyncHandler(async(req , res)=>{
     .json(
         new ApiResponse(200 , channel[0] , "User channel fetched successfully")
     )
+})
+
+
+//another aggregate pipeline of watchHistory
+const getWatchHistroy = asyncHandler(async(req , res) =>{
+    const user = User.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(req.user._id)
+            }
+        },
+        {
+            $lookup:{
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "watchHistory"
+            }
+        }
+    ])
 })
 
 
